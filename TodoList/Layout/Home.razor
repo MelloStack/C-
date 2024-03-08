@@ -1,0 +1,72 @@
+﻿<section class="mainSection">
+    <div class="container">
+        <div class="input_container">
+            <div class="task-list">
+                <h1>Fri Mar 01 2024</h1>
+                <p>@taskCount Todos</p>
+                <input @bind='onInputChange' class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" placeholder="New Todo" />
+                <button onclick="@addNewTodo" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2" >Add New Todo</button>
+            </div>
+        </div>
+        <div class="todoListContainer">
+            <div class="todo">
+                <div class="crud">
+                    <img alt="delete todo" title="delete todo" src="https://cdn-icons-png.flaticon.com/512/6861/6861362.png" />
+                </div>
+                <h1>Teste</h1>
+            </div>
+            @foreach (var task in tasks)
+            {
+
+                <div class="todo">
+                    <div class="crud">
+                        <button @onclick="() => deleteTodo(task)"> <img alt="delete todo" title="delete todo" src="https://cdn-icons-png.flaticon.com/512/6861/6861362.png" /></button>
+                    </div>
+                    <h1>@task</h1>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    public class Todo
+    {
+        public string Task { get; set; }
+        public bool IsCompleted { get; set; }
+
+        public Todo(string task)
+        {
+            Task = task;
+            IsCompleted = false; // Default value, assuming the task is initially not completed
+        }
+
+        public void MarkAsCompleted()
+        {
+            IsCompleted = true;
+        }
+    }
+
+    private List<string> tasks = new List<string>();
+    string? onInputChange {get;set;}
+
+    int taskCount = 1;
+
+    void addNewTodo()
+    {
+        if (onInputChange == null || onInputChange == "")
+        {
+            return;   
+        }
+
+        tasks.Add(onInputChange);
+        taskCount++;
+
+        onInputChange = "";
+    }
+
+    void deleteTodo(string todo)
+    {
+        tasks.Remove(todo);
+    }
+}
